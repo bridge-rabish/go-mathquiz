@@ -70,6 +70,11 @@ func savequiz (q *Quiz){
 //
 func userinfo( res http.ResponseWriter, req *http.Request ){
 
+    err := req.ParseForm()
+    if err != nil {
+        fmt.Println("error parsing form ")
+    }
+
     name := req.FormValue("name" )
     email := req.FormValue("email" )
 
@@ -133,6 +138,11 @@ func makequiz() *Quiz{
             strconv.Itoa( first+4 * second ),
             strconv.Itoa( first+5 * second ),
         }
+        // shuffle answers
+        for i := range answers {
+            j := rand.Intn(i + 1)
+            answers[i], answers[j] = answers[j], answers[i]
+        }
         que := Question{ 
             strconv.Itoa( i+1 ),
             quetext ,
@@ -156,26 +166,15 @@ func getquestion( res http.ResponseWriter, req *http.Request ){
 func score( res http.ResponseWriter, req *http.Request ){
 }
 
-//
-// Render index page template
-//
-func index( res http.ResponseWriter, req *http.Request ){
-    res.Header().Set(
-        "Content-Type",
-        "text/html" ,
-    )
-    io.WriteString(
-        res,
-        "index page",
-    )
-}
-
 func main() {
 
-    http.HandleFunc("/", index )
     http.HandleFunc("/userinfo", userinfo )
     http.HandleFunc("/question", getquestion )
     http.HandleFunc("/score", score )
-    http.ListenAndServe(":9000", nil )
+
+    fs := http.FileServer(http.Dir("public"))
+    http.Handle("/", fs )
+
     fmt.Println("Server is listening to port 9000" );
+    http.ListenAndServe(":9000", nil )
 }

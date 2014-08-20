@@ -1,0 +1,16 @@
+<!doctype html>
+<html ng-app="goquizApp">
+    <head>
+        <title>Simple Go Quiz</title>
+        <link rel="stylesheet" href="/css/goquiz.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+    </head>
+    <body>
+        <div ng-controller="userCtrl">
+            <input type="text" ng-model="data.name"  size="30" placeholder="Enter name">
+            <input type="text" ng-model="data.email"  size="30" placeholder="Enter email">
+            <input class="btn-primary" ng-click="take()" type="submit" value="Take quiz">
+        </div>
+        <script src="js/goquiz.js"></script>
+    </body>
+</html>
