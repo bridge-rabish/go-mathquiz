@@ -15,7 +15,7 @@ import (
 type User struct {
     Name string `json:"name"`
     Email string `json:"email"`
-//    Quizzes 
+    //Quizzes
 }
 
 //
@@ -34,7 +34,7 @@ func saveuser( u *User) User{
     c := session.DB("goquiz").C("users")
     err = c.Insert(&u)
     if err != nil {
-        fmt.Println("error saving user data into mongo");    
+        fmt.Println("error saving user data into mongo");
         panic(err)
     }
 
@@ -60,7 +60,7 @@ func savequiz (q *Quiz){
     c := session.DB("goquiz").C("quizzes")
     err = c.Insert(&q)
     if err != nil {
-        fmt.Println("error saving quizzes data into mongo");    
+        fmt.Println("error saving quizzes data into mongo");
         panic(err)
     }
 }
@@ -74,9 +74,14 @@ func userinfo( res http.ResponseWriter, req *http.Request ){
     if err != nil {
         fmt.Println("error parsing form ")
     }
+    // Content-Type : application/json
+    values := make(map[string]interface{})
+    if error := json.NewDecoder(req.Body).Decode(&values); error != nil {
+        panic(error)
+    }
 
-    name := req.FormValue("name" )
-    email := req.FormValue("email" )
+    name := values["name"].( string )
+    email := values["email"].( string )
 
     u := &User{name, email}
 
@@ -116,7 +121,7 @@ type Question struct {
 type Quiz struct {
     Id string `json:"id"`
     Name string `json:"name"`
-    Questions [5]Question `json:"questions"`   
+    Questions [5]Question `json:"questions"`
 }
 
 //
@@ -143,17 +148,17 @@ func makequiz() *Quiz{
             j := rand.Intn(i + 1)
             answers[i], answers[j] = answers[j], answers[i]
         }
-        que := Question{ 
+        que := Question{
             strconv.Itoa( i+1 ),
             quetext ,
             answers,
             false,
         }
         ques[i] = que
-    }    
+    }
     quizobj := &Quiz{
-        "1",
-        "Quiz 1",
+        strconv.FormatInt(time.Now().Unix(), 10),
+        "Quiz",
         ques,
     }
     savequiz( quizobj )
