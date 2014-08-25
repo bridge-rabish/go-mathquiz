@@ -6,10 +6,25 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     </head>
     <body>
-        <div ng-controller="userCtrl">
+
+        <div ng-controller="userCtrl" ng-show="data.show" >
             <input type="text" ng-model="data.name"  size="30" placeholder="Enter name">
             <input type="text" ng-model="data.email"  size="30" placeholder="Enter email">
             <input class="btn-primary" ng-click="take()" type="submit" value="Take quiz">
+        </div>
+
+        <div ng-controller="quesCtrl"  ng-show="data.show">
+            name : {{quiz.name}}
+            <ul>
+                <li ng-repeat="q in quiz.questions">
+                    <p>{{q.question}}</p>
+                    <ul>
+                        <li ng-repeat="a in q.answers"> 
+                            <input name="{{ $parent.id }}" type="radio"> {{a}} 
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
         <script src="js/goquiz.js"></script>
     </body>
