@@ -15,10 +15,26 @@ angular.module('goquizApp', [])
         var quiz = {
             questions : []
         };
-        $scope.quiz = quiz  ;
-        $scope.data ={
-            show : false
+
+        $scope.que = {};
+        $scope.quiz = quiz;
+        $scope.data = {
+            show : false ,
+            done : false
         };
+
+        var i = 0;
+        $scope.next = function(){
+            $scope.que = $scope.quiz.questions[++i];
+            if ( !$scope.que ){
+                $scope.data.done = true;
+            }
+        };
+
+        $scope.$watch('quiz.questions', function() {
+            $scope.que = $scope.quiz.questions[i];
+        });
+
         quizService.set( $scope );
     }])
     .factory('quizService', [ '$http', function($http){
@@ -31,7 +47,7 @@ angular.module('goquizApp', [])
                 $http.post('/userinfo', data )
                 .success(function(data) {
                     $scope.quiz = data;
-                    $scope.data.show = true  ;
+                    $scope.data.show = true;
                 })
                 .error(function(data) {
                     console.log('error in saving user');

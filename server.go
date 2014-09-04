@@ -172,7 +172,6 @@ func score( res http.ResponseWriter, req *http.Request ){
 }
 
 func main() {
-
     http.HandleFunc("/userinfo", userinfo )
     http.HandleFunc("/question", getquestion )
     http.HandleFunc("/score", score )

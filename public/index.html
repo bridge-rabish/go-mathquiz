@@ -15,16 +15,18 @@
 
         <div ng-controller="quesCtrl"  ng-show="data.show">
             name : {{quiz.name}}
-            <ul>
-                <li ng-repeat="q in quiz.questions">
-                    <p>{{q.question}}</p>
-                    <ul>
-                        <li ng-repeat="a in q.answers"> 
-                            <input name="{{ $parent.id }}" type="radio"> {{a}} 
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+            <div class="que" ng-show="que != undefined" >
+                <p>{{que.question}}</p>
+                <ul>
+                    <li ng-repeat="a in que.answers"> 
+                        <input name="{{ que.question_id }}" type="radio">{{a}}
+                    </li>
+                </ul>
+                <input type="button" value="next" ng-click="next()" />
+            </div>
+            <div class="finish" ng-show="data.done" >
+                Thank you! 
+            </div>
         </div>
         <script src="js/goquiz.js"></script>
     </body>
